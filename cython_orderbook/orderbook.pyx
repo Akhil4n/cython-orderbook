@@ -117,6 +117,7 @@ class OrderBook:
             if curr.remaining_quantity > order.remaining_quantity:
                 order.status = OrderStatus.FILLED
                 curr.status = OrderStatus.PARTIALLY_FILLED
+                price_level.total_quantity -= order.remaining_quantity
                 curr.remaining_quantity -= order.remaining_quantity
                 order.remaining_quantity = 0
             elif curr.remaining_quantity == order.remaining_quantity:
@@ -141,7 +142,7 @@ class OrderBook:
                 self._best_bid = next(iter(self.bids.keys())) if self.bids else None
 
     def _update_limit_order(self, order: Order):
-        if order.remaining_quantity > 0:
+        if order.remaining_quantity > 0 and order.status != OrderStatus.FILLED:
             side_dict = self.bids if order.side == OrderSide.BID else self.asks
             if order.price in side_dict:
                 side_dict[order.price].add_order(order)

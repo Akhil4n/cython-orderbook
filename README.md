@@ -30,10 +30,13 @@ book.add_limit_order(ask)
 market_order = Order(side=OrderSide.BID, original_quantity=50)
 book.add_market_order(market_order)
 
+# Display the book before canceling remaining bid order
+print(book)
+
 # Cancel an order
 book.cancel_order(bid.order_id)
 
-# Display the book
+# Display the book after cancelling
 print(book)
 
 # View trade log
