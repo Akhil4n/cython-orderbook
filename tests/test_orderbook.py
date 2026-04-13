@@ -1,6 +1,6 @@
 import pytest
 from decimal import Decimal
-from orderbook import Order, OrderBook, OrderSide, OrderStatus, TradeType
+from cython_orderbook.orderbook import Order, OrderBook, OrderSide, OrderStatus, TradeType
 
 @pytest.fixture
 def book():

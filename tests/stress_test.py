@@ -1,5 +1,5 @@
 from decimal import Decimal
-from orderbook import Order, OrderBook, OrderSide, OrderStatus
+from cython_orderbook.orderbook import Order, OrderBook, OrderSide, OrderStatus
 import random
 import time
 

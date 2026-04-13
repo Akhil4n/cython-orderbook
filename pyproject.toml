@@ -1,11 +1,11 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=61.0", "cython"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "akhil4n-orderbook"
-version = "0.1.1"
-description = "A high-performance order book implementation in Python"
+name = "cython-orderbook"
+version = "0.1.0"
+description = "A high-performance order book implementation using Cython"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -18,7 +18,4 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/Akhil4n/py-orderbook"
-
-[tool.setuptools]
-py-modules = ["orderbook"]
+Homepage = "https://github.com/Akhil4n/cython-orderbook"
