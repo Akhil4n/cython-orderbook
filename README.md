@@ -23,7 +23,7 @@ bid = Order(side=OrderSide.BID, price=Decimal("50.00"), original_quantity=100)
 book.add_limit_order(bid)
 
 # Add a matching ask
-ask = Order(side=OrderSide.ASK, price=Decimal("50.00"), original_quantity=100)
+ask = Order(side=OrderSide.ASK, price=Decimal("50.00"), original_quantity=95)
 book.add_limit_order(ask)
 
 # Add a market order (no price needed)
