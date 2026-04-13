@@ -2,7 +2,7 @@
 A high-performance order book implementation in Python with Cython acceleration and price-time priority matching. Available as an official PyPI package.
 
 ## Installation
-````pip install cython-orderbook```
+````pip install cython-orderbook
 
 ## Features
 * Price-time priority matching engine
