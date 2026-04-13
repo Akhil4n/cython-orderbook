@@ -1,6 +1,6 @@
 import pytest
 from decimal import Decimal
-from orderbook import Order, MarketOrder, OrderBook, OrderSide, OrderStatus, TradeType
+from orderbook import Order, OrderBook, OrderSide, OrderStatus, TradeType
 
 @pytest.fixture
 def book():
@@ -48,7 +48,7 @@ def test_limit_bid_cancel(book):
 def test_market_bid_sweep(book):
     ask_order = Order(side=OrderSide.ASK, price=Decimal("50.00"), original_quantity=60)
     book.add_limit_order(ask_order)
-    market_bid_order = MarketOrder(side=OrderSide.BID, original_quantity=60)
+    market_bid_order = Order(side=OrderSide.BID, original_quantity=60)
     book.add_market_order(market_bid_order)
     assert ask_order.remaining_quantity == 0
     assert ask_order.status == OrderStatus.FILLED
@@ -63,7 +63,7 @@ def test_market_bid_sweep_multiple(book):
     book.add_limit_order(ask_order2)
     ask_order3 = Order(side=OrderSide.ASK, price=Decimal("50.00"), original_quantity=60)
     book.add_limit_order(ask_order3)
-    market_bid_order = MarketOrder(side=OrderSide.BID, original_quantity=180)
+    market_bid_order = Order(side=OrderSide.BID, original_quantity=180)
     book.add_market_order(market_bid_order)
     assert ask_order1.remaining_quantity == 0
     assert ask_order1.status == OrderStatus.FILLED
@@ -99,7 +99,7 @@ def test_cancel_nonexistent_order(book):
     assert book.cancel_order("fakeorder") == False
 
 def test_market_order_empty_book(book):
-    market_bid_order = MarketOrder(side=OrderSide.BID, original_quantity=60)
+    market_bid_order = Order(side=OrderSide.BID, original_quantity=60)
     book.add_market_order(market_bid_order)
     assert len(book.orders) == 0
 
@@ -165,7 +165,7 @@ def test_trade_log_comprehensive(book):
 
     ask3 = Order(side=OrderSide.ASK, price=Decimal("50.00"), original_quantity=50)
     book.add_limit_order(ask3)
-    market_bid = MarketOrder(side=OrderSide.BID, original_quantity=50)
+    market_bid = Order(side=OrderSide.BID, original_quantity=50)
     book.add_market_order(market_bid)
 
     assert len(book.trade_log) == 3

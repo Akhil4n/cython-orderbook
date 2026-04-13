@@ -1,5 +1,5 @@
 from decimal import Decimal
-from orderbook import Order, MarketOrder, OrderBook, OrderSide, OrderStatus
+from orderbook import Order, OrderBook, OrderSide, OrderStatus
 import random
 import time
 
@@ -46,7 +46,7 @@ def test_realistic_throughput():
             order = Order(side=side, price=price, original_quantity=random.randint(1, 100))
             book.add_limit_order(order)
         elif action == "market":
-            order = MarketOrder(side=side, original_quantity=random.randint(1, 100))
+            order = Order(side=side, original_quantity=random.randint(1, 100))
             book.add_market_order(order)
         elif action == "cancel" and book.orders:
             order_id = random.choice(list(book.orders.keys()))

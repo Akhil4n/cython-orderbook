@@ -27,23 +27,24 @@ def _next_id():
     _order_counter += 1
     return str(_order_counter)
 
-# this class is for default limit orders, use MarketOrder for market order objects
-@dataclass
-class Order:
-    side: OrderSide
-    price: Decimal
-    original_quantity: int
-    remaining_quantity: int = field(default=0, init=False)
-    order_id: str = field(default_factory=_next_id, init=False)
-    status: OrderStatus = field(default=OrderStatus.OPEN, init=False)
+# this class is for both limit and market orders. Price gets set to None for market order.
+cdef class Order:
+    cdef public object side
+    cdef public int original_quantity
+    cdef public object price
+    cdef public int remaining_quantity
+    cdef public str order_id
+    cdef public object status
+    
+    def __init__(self, side, original_quantity, price=None):
+        self.side = side
+        self.original_quantity = original_quantity
+        self.price = price
+        self.remaining_quantity = original_quantity
+        self.order_id = _next_id()
+        self.status = OrderStatus.OPEN
 
-    def __post_init__(self):
-        self.remaining_quantity = self.original_quantity
-
-@dataclass
-class MarketOrder(Order):
-    price: Optional[Decimal] = field(default=None, init=False)
-
+    
 @dataclass
 class Trade:
     price: Decimal
@@ -54,18 +55,23 @@ class Trade:
     trade_type: TradeType
     timestamp: datetime = field(default_factory=datetime.now, init=False)
 
-class PriceLevel:
-    def __init__(self, price: Decimal, side: OrderSide):
+cdef class PriceLevel:
+    cdef public object price
+    cdef public object queue
+    cdef public int total_quantity
+    cdef public object side
+
+    def __init__(self, price, side):
         self.price = price
         self.queue = OrderedDict()
         self.total_quantity = 0
         self.side = side
 
-    def add_order(self, order: Order) -> None:
+    cpdef void add_order(self, order):
         self.queue[order.order_id] = order
         self.total_quantity += order.remaining_quantity
 
-    def remove_order(self, order_id: str) -> bool:
+    cpdef bint remove_order(self, str order_id):
         if order_id in self.queue:
             item = self.queue[order_id]
             self.total_quantity -= item.remaining_quantity
@@ -73,12 +79,12 @@ class PriceLevel:
             return True
         return False
 
-    def peek(self) -> Order:
+    cpdef object peek(self):
         if self.queue:
             return next(iter(self.queue.values()))
         return None
 
-    def pop(self) -> Order:
+    cpdef object pop(self):
         if self.queue:
             item_id, item = self.queue.popitem(last=False)
             self.total_quantity -= item.remaining_quantity
@@ -164,7 +170,8 @@ class OrderBook:
 
         self._update_limit_order(order)
 
-    def add_market_order(self, order: MarketOrder) -> None:  
+    def add_market_order(self, order: Order) -> None:
+        order.price = None
         if order.side == OrderSide.BID:
             while self.asks and order.remaining_quantity > 0:
                 self._match(order)

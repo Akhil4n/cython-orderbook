@@ -1,11 +1,16 @@
-venv/
-__pycache__/
-.pytest_cache/
-.env
-playground.py
-
-# Build artifacts
-dist/
+# Cython build artifacts
+*.so
+*.c
 build/
 *.egg-info/
-akhil4n_orderbook.egg-link
+
+# Python
+__pycache__/
+.pytest_cache
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# macOS
+.DS_Store
