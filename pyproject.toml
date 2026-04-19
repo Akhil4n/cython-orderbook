@@ -21,7 +21,7 @@ dev = [
 Homepage = "https://github.com/Akhil4n/cython-orderbook"
 
 [tool.cibuildwheel]
-build = "cp310-* cp311-* cp312-*"  # build for Python 3.10, 3.11, 3.12
+skip = "pp*"
 
 [tool.cibuildwheel.linux]
 before-build = "pip install cython"
