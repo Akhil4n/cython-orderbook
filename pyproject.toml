@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cython-orderbook"
-version = "0.1.1"
+version = "0.1.2"
 description = "A high-performance order book implementation using Cython"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -19,3 +19,15 @@ dev = [
 
 [project.urls]
 Homepage = "https://github.com/Akhil4n/cython-orderbook"
+
+[tool.cibuildwheel]
+build = "cp310-* cp311-* cp312-*"  # build for Python 3.10, 3.11, 3.12
+
+[tool.cibuildwheel.linux]
+before-build = "pip install cython"
+
+[tool.cibuildwheel.macos]
+before-build = "pip install cython"
+
+[tool.cibuildwheel.windows]
+before-build = "pip install cython"
